@@ -18,7 +18,6 @@ private:
    const Model &model_;	       
    const int dimen_;           
    double *k1_, *k2_, *k3_, *k4_, *temp_;	
-   int Update(double dt, double *k);
 };
 
 #endif	// RUNGE_KUTTA_H_

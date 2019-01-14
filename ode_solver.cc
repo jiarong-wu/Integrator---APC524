@@ -36,6 +36,7 @@ int main(int argc, char *argv[]) {
   double *x_last = new double[*dimen];  // To store last step results for ab2 method
   Model *model;
   Integrator *integrator;
+  AB *integrator_ab;
 
   // Set up model
   if (strcmp(argv[1], "duffing") == 0)
@@ -75,11 +76,20 @@ int main(int argc, char *argv[]) {
   // Set up integration scheme
   // {euler, rk4, ab2} 
   if (strcmp(argv[2], "euler") == 0)
+  {
     integrator = new Euler(dt, *model);
+    integrator_ab = new AB(dt, *model);
+  }
   else if (strcmp(argv[2], "rk4") == 0)
+  {
     integrator = new RungeKutta(dt, *model);
+    integrator_ab = new AB(dt, *model);
+  }
   else if (strcmp(argv[2], "ab2") == 0)
+  {
     integrator = new AB(dt, *model);
+    integrator_ab = new AB(dt, *model);
+  }
   else
     std::cout << "Error: integrator must be one of euler, rk4 or ab2!" << std::endl;
 
@@ -92,15 +102,19 @@ int main(int argc, char *argv[]) {
     {
       if (i == 0)
       {
-        x_last = x;
+        for (int j = 0; j < *dimen; ++j)
+          x_last[j] = x[j];
         RungeKutta temp_integrator(dt, *model);
-        temp_integrator.Step(t, x);       
+        temp_integrator.Step(t, x);      
       }
       else 
       {
-        x_last = x;
-        integrator->GetLast(x_last);
-        integrator->Step(t, x);
+        for (int j = 0; j < *dimen; ++j)
+          x_last[j] = x[j];
+        integrator_ab->GetLast(x_last);
+        integrator_ab->Step(t, x);
+        // integrator->GetLast(x_last);
+        // integrator->Step(t, x);
       }
     }
     // Not using ab2
@@ -112,6 +126,7 @@ int main(int argc, char *argv[]) {
 
   delete integrator;
   delete model;
+  delete integrator_ab;
   delete x;
   delete x_last;
 

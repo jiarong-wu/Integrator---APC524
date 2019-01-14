@@ -1,4 +1,5 @@
 
+
 integrators = euler.o runge-kutta.o adams-bashforth.o
 equations = duffing.o linear-oscillator.o lorenz.o
 objects = ode_solver.o $(integrators) $(equations)
@@ -8,7 +9,7 @@ CXXFLAGS = -g -Wall -std=c++11
 all: ode_solver
 
 ode_solver : $(objects)
-	$(CXX) -o $@ $^
+	$(CXX) $(CXXFLAGS) -o  $@ $^
 
 clean:
 	$(RM) *.o

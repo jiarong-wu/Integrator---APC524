@@ -22,22 +22,18 @@ RungeKutta::~RungeKutta()
    delete [] temp_;
 }
 
-int RungeKutta::Update(double dt, double *k)
-{
-  for (int i = 0; i < dimen_; ++i)
-    temp_[i] += dt * k[i];
-  return 0;
-}
 
 int RungeKutta::Step(double t, double *x)
 {  
-   temp_ = x;
    model_.rhs(t, x, k1_);
-   Update(0.5*dt_, k1_);
+   for (int i = 0; i < dimen_; ++i)
+    temp_[i] = x[i] + 0.5*dt_*k1_[i];  
    model_.rhs(t + 0.5*dt_, temp_, k2_);
-   Update(0.5*dt_, k2_);
+   for (int i = 0; i < dimen_; ++i)
+    temp_[i] = x[i] + 0.5*dt_*k2_[i];  
    model_.rhs(t + 0.5*dt_, temp_, k3_);
-   Update(dt_, k3_);
+   for (int i = 0; i < dimen_; ++i)
+    temp_[i] = x[i] + dt_*k3_[i]; 
    model_.rhs(t + dt_, temp_, k4_);
    for (int i = 0; i < dimen_; ++i)
    {

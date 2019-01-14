@@ -18,7 +18,7 @@ AB::~AB()
    delete [] x_last_;
 }
 
-int AB::GetLast(double *x_last)
+void AB::GetLast(double *x_last)
 {
   x_last_ = x_last;
 }

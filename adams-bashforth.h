@@ -9,8 +9,8 @@ class AB : public Integrator
 public:
    AB(double dt, const Model &model);
    ~AB();
-   int GetLast(double *xlast);
    int Step(double t, double *x);
+   void GetLast(double *xlast);
 
 private:
    const double dt_;	       
